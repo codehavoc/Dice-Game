@@ -1,0 +1,133 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Dice Roller</title>
+</head>
+<body>
+    <div class="w-100 d-flex justify-content-center align-items-center" style="height: 20%">
+        <p class="h3"><b>
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-dice-2" viewBox="0 0 20 20">
+                <path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/>
+                <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+              </svg> DICE ROLLER
+        </b></p>
+    </div>
+
+    <div class="row w-100 d-flex justify-content-center" style="height: 15%" id="user-names"></div>
+
+    <div class="row w-100 d-flex justify-content-center" style="height: 30%" id="dice-images"></div>
+
+
+    <div class="w-100 d-flex justify-content-center align-items-center" style="height: 20%">
+        <p id="winning-results" class="font-italic"></p>
+    </div>
+
+    <div class="w-100 d-flex justify-content-center align-items-center" style="height: 5%">
+        <button class="btn btn-danger m-5 p-2 w-25" onclick="rollTheDices()">Roll Dice(s)</button>
+        <button class="btn btn-primary m-5 p-2 w-25" onclick="showModal()">
+            Dice Configurations
+        </button>
+    </div>
+
+    <script>
+
+        var players = 2
+        var results = document.getElementById("winning-results");
+        var nameSection = document.getElementById("user-names");
+        var diceSection = document.getElementById("dice-images");
+
+        defaultScreen();
+
+        // user defined functions
+        function rollTheDices(){
+            let nameString = ``;
+            let diceString = ``;
+            let diceRolls = []
+            let sortingArray = []
+
+            for(var roll = 0; roll<players; roll++){
+                let val = Math.floor(Math.random()*6)+1
+                diceRolls.push(val)
+                sortingArray.push(val)
+            }
+
+            diceRolls.forEach((element,index) => {
+                nameString +=   `<div class="col d-flex justify-content-center align-items-center">
+                                    <h6 class="font-italic">Player 0${index+1}</h6>
+                                </div>`
+            });
+
+            nameSection.innerHTML = nameString;
+
+            diceRolls.forEach((element) => {
+                diceString +=   `<div class="col d-flex justify-content-center align-items-center">
+                                    <img class="row" src="Images/dice${element}.svg" width="200" height="200">
+                                </div>`
+            });
+
+            diceSection.innerHTML = diceString;
+            
+            sortingArray.sort(function(a, b){return b-a});
+
+            if (sortingArray[0] == sortingArray[1]){
+                results.innerHTML = "Draw"
+            }else{
+                results.innerHTML = `Player 0${diceRolls.indexOf(sortingArray[0])+1} won the round`
+            }
+        }
+
+        function defaultScreen(){
+            let nameString = ``;
+            let diceString = ``;
+            let diceRolls = []
+
+            for(var i = 0; i<players; i++){
+                diceRolls.push(1)
+            }
+            
+            diceRolls.forEach((element,index) => {
+                nameString +=   `<div class="col d-flex justify-content-center align-items-center">
+                                    <h6 class="font-italic">Player 0${index+1}</h6>
+                                </div>`
+            });
+
+            nameSection.innerHTML = nameString;
+
+            diceRolls.forEach((element) => {
+                diceString +=   `<div class="col d-flex justify-content-center align-items-center">
+                                    <img class="row" src="Images/dice${element}.svg" width="200" height="200">
+                                </div>`
+            });
+
+            diceSection.innerHTML = diceString;
+
+            results.innerHTML = `** No winning results **`
+        }
+
+        function showModal(){
+            let input = prompt("This game supports up to 5 dices. Select from the range of 1-5. Anything higher than that will be capped to 5.")
+            input = parseInt(input)
+       
+            if(input){
+                if(input >= 1 && input <= 5){
+                    players = input
+                }else if(input < 1){
+                    players = 1 
+                }else{
+                    players = 5
+                }
+            }else{
+                players = 2
+            }
+
+            defaultScreen();
+        }
+    </script>
+
+</body>
+</html>
