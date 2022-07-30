@@ -18,7 +18,19 @@
         </b></p>
     </div>
 
-    <div class="row w-100 d-flex justify-content-center" style="height: 15%" id="user-names"></div>
+    <div class="w-100 d-flex justify-content-center" style="height: 12%">
+        <select name="player-configs" id="player-configs" value="" class="font-italic"
+        onchange="configureDiceCount(parseInt(value))">
+            <option value="none" disabled selected>Player Configurations</option>
+            <option value="1" >1 Player</option>
+            <option value="2" >2 Players</option>
+            <option value="3" >3 Players</option>
+            <option value="4" >4 Players</option>
+            <option value="5" >5 Players</option>
+        </select>
+    </div>
+
+    <div class="row w-100 d-flex justify-content-center" style="height: 5%" id="user-names"></div>
 
     <div class="row w-100 d-flex justify-content-center" style="height: 30%" id="dice-images"></div>
 
@@ -28,10 +40,7 @@
     </div>
 
     <div class="w-100 d-flex justify-content-center align-items-center" style="height: 5%">
-        <button class="btn btn-danger m-5 p-2 w-25" onclick="rollTheDices()">Roll Dice(s)</button>
-        <button class="btn btn-primary m-5 p-2 w-25" onclick="showModal()">
-            Dice Configurations
-        </button>
+        <button class="btn btn-danger w-25" onclick="rollTheDices()">Roll Dice(s)</button>
     </div>
 
     <script>
@@ -44,7 +53,8 @@
         defaultScreen();
 
         // user defined functions
-        function rollTheDices(){
+        function rollTheDices()
+        {
             let nameString = ``;
             let diceString = ``;
             let diceRolls = []
@@ -74,14 +84,20 @@
             
             sortingArray.sort(function(a, b){return b-a});
 
-            if (sortingArray[0] == sortingArray[1]){
-                results.innerHTML = "Draw"
+            if(players != 1){
+                if (sortingArray[0] == sortingArray[1]){
+                    results.innerHTML = "Draw"
+                }else{
+                    results.innerHTML = `Player 0${diceRolls.indexOf(sortingArray[0])+1} won the round`
+                }
             }else{
-                results.innerHTML = `Player 0${diceRolls.indexOf(sortingArray[0])+1} won the round`
+                results.innerHTML = "Duh.. Player 01 will always win"
             }
+            
         }
 
-        function defaultScreen(){
+        function defaultScreen()
+        {
             let nameString = ``;
             let diceString = ``;
             let diceRolls = []
@@ -109,24 +125,12 @@
             results.innerHTML = `** No winning results **`
         }
 
-        function showModal(){
-            let input = prompt("This game supports up to 5 dices. Select from the range of 1-5. Anything higher than that will be capped to 5.")
-            input = parseInt(input)
-       
-            if(input){
-                if(input >= 1 && input <= 5){
-                    players = input
-                }else if(input < 1){
-                    players = 1 
-                }else{
-                    players = 5
-                }
-            }else{
-                players = 2
-            }
-
+        function configureDiceCount(playerCount){
+            console.log("comes here",playerCount)
+            players = playerCount;
             defaultScreen();
         }
+
     </script>
 
 </body>
