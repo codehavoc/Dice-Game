@@ -3,3 +3,13 @@ body{
     color: rgba(255, 247, 237, 0.964) !important;
     font-family: 'Inter';
 }
+
+select{
+    min-width: 250px !important; 
+    max-height: 40px;
+    border-radius: 8px;
+    padding: 7px;
+    background: #ffb366;
+    align-items: center;
+    font-weight: 500;
+}
